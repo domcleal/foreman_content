@@ -1,0 +1,5 @@
+<div class="tab-pane" id="content_views">
+  <%= fields_for @hostgroup do |f| %>
+    <%= multiple_selects f, :content_views, Content::ContentView, @hostgroup.all_content_views_ids , {:disabled => @hostgroup.inherited_content_view_ids}, {} %>
+  <% end  -%>
+</div>

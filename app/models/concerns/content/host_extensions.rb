@@ -33,6 +33,15 @@ module Content::HostExtensions
     (inherited_product_ids + product_ids).uniq
   end
 
+  def inherited_content_view_ids
+    return [] unless hostgroup_id
+    Content::AvailableContentView.where(:hostgroup_id => hostgroup.path_ids).pluck(:content_view_id)
+  end
+
+  def all_content_view_ids
+    (inherited_content_view_ids + content_view_ids).uniq
+  end
+
   def attached_repositories
     Content::Repository.attached_to_host(self)
   end
