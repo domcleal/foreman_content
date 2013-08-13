@@ -1,5 +1,6 @@
 module Content
   class ContentView < ActiveRecord::Base
+    has_many :repositories
     has_many :available_content_views, :dependent => :destroy
     has_many :hostgroup, :through => :available_content_views
     delegate :operatingsystems, :to => :available_content_views, :allow_nil => true
@@ -11,6 +12,8 @@ module Content
     belongs_to :operatingsystem
 
     before_save :clone_repos
+
+    validates_presence_of :name
 
     scoped_search :on => [:name, :created_at], :complete_value => :true
     scoped_search :in => :product, :on => :name, :rename => :product, :complete_value => :true

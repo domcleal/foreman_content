@@ -7,12 +7,16 @@
     <th><%= sort :name, :as => s_("Name") %></th>
     <th><%= _("Originator") %></th>
     <th><%= _("Created at") %></th>
+    <th></th>
   </tr>
   <% @content_views.each do |content_view| %>
     <tr>
-      <td><%= link_to_if_authorized(h(content_view.name), hash_for_edit_content_view_path(:id => content_view.name)) %></td>
+      <td><%= link_to_if_authorized(h(content_view.name), hash_for_edit_content_view_path(content_view)) %></td>
       <td><%= content_view.originator_name %></td>
       <td><%= _("%s ago") % time_ago_in_words(content_view.created_at) %></td>
+      <td><%= action_buttons(
+            display_delete_if_authorized(hash_for_repository_path(content_view), :confirm => "Delete #{content_view}?")
+      )%></td>
     </tr>
   <% end %>
 </table>

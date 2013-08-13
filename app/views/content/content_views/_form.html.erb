@@ -18,15 +18,15 @@
       <th><%= _("Last sync status") %></th>
       <th><%= _("Content type") %></th>
     </tr>
-    <% origin = @content_view.product || @content_view.operatingsystem %>
-    <% origin.repositories.each do |repository| %>
+    <% owner = repositories_owner @content_view %>
+    <% owner.repositories.each do |repository| %>
       <tr>
         <td><%= repository.name %></td>
         <td><%= repository.try(:state) %></td>
         <td><%= last_time(repository.last_sync) %></td>
         <td><%= repository.content_type %></td>
       </tr>
-    <% end if origin %>
+    <% end if owner %>
   </table>
   <%= submit_or_cancel f %>
 <% end %>
