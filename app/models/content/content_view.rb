@@ -32,7 +32,7 @@ module Content
     def clone_repos
       return unless origin = product || operatingsystem
       origin.repositories.each do |repository|
-        repository.publish origin.name
+        repository.publish origin.name, id
       end
     end
   end
