@@ -1,19 +1,10 @@
-module Content::Orchestration::Pulp
+module Content::Orchestration::Pulp::Sync
   extend ActiveSupport::Concern
-  include ::Orchestration
+  include Content::Orchestration::Pulp
 
   included do
     after_validation :queue_pulp
     before_destroy :queue_pulp_destroy unless Rails.env.test?
-    delegate :last_sync, :sync_status, :sync, :counters, :sync_history, :state, :to => :repo
-  end
-
-  def orchestration_errors?
-    errors.empty?
-  end
-
-  def pulp?
-    @use_pulp ||= Setting.use_pulp and enabled?
   end
 
   private
@@ -61,7 +52,7 @@ module Content::Orchestration::Pulp
   def repo_options
     {
       :pulp_id       => pulp_id,
-      :relative_path  => relative_path,
+      :relative_path => relative_path,
       :description   => description,
       :feed          => feed,
       :content_type  => content_type,
