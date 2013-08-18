@@ -5,28 +5,32 @@ module Content
 
     def index
       @repositories = Repository.search_for(params[:search], :order => params[:order]).
-        paginate(:page => params[:page]).includes(:product, :operatingsystems)
+        paginate(:page => params[:page])
     end
 
     def new
-      @repository = Repository.new(:unprotected => true)
+      case params[:type]
+        when "operatingsystem"
+          @repository = Repository::OperatingSystem.new()
+        when "product"
+          @repository = Repository::Product.new()
+        else
+          not_found
+      end
     end
 
     def create
-      case params[:content_repository][:operatingsystem]
-        when "operatingsystem" #wizard step1 selected os repo
-          @repository = Repository.new(:unprotected => true, :operatingsystem_id => ::Redhat.first.id)
-          redirect_to new_repository_path(:page => "os_form")
-        when "product" #wizard step1 selected product repo
-          @repository = Repository.new(:unprotected => true, :product_id => Product.first.id)
-          redirect_to new_repository_path(:page => "product_form")
-        else
-          @repository = Repository.new(params[:content_repository])
-          if @repository.save
-            process_success
-          else
-            process_error
-          end
+      type = params[:content_repository].delete(:type)
+      @repository = case type
+                      when "Content::Repository::Product"
+                        Repository::Product.new(params[:content_repository])
+                      when "Content::Repository::OperatingSystem"
+                        Repository::OperatingSystem.new(params[:content_repository])
+      end
+      if @repository.save
+        process_success
+      else
+        process_error
       end
     end
 
@@ -34,6 +38,7 @@ module Content
     end
 
     def update
+      params[:content_repository].delete(:type)
       if @repository.update_attributes(params[:content_repository])
         process_success
       else

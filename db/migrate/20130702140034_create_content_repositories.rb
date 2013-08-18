@@ -14,7 +14,8 @@ class CreateContentRepositories < ActiveRecord::Migration
       t.references  :architecture
       t.string      :status
       t.datetime    :last_sync
-      t.references  :entity # belongs_to product or os
+      t.references  :product
+      t.references  :operatingsystem
       t.timestamps
     end
     add_index :content_repositories, :pulp_id, :unique => true

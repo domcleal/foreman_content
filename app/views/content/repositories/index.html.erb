@@ -1,6 +1,6 @@
 <% title _("Repositories") %>
-<% title_actions display_link_if_authorized(_("New Product Repository"), hash_for_new_repository_path(:page=>'product_form')),
-                 display_link_if_authorized(_("New Operating system Repository"), hash_for_new_repository_path(:page=>'os_form')), help_path %>
+<% title_actions display_link_if_authorized(_("New Product Repository"), hash_for_new_repository_path(:type=>'product')),
+                 display_link_if_authorized(_("New Operating system Repository"), hash_for_new_repository_path(:type=>'operatingsystem')), help_path %>
 
 <table class="table table-bordered table-striped">
   <tr>
@@ -14,7 +14,7 @@
   <% @repositories.each do |repository| %>
     <tr>
       <td><%= link_to_if_authorized(h(repository.name), hash_for_repository_path(repository)) %></td>
-      <td><%= repository.product || repository.operatingsystem.try(:to_label) %></td>
+      <td><%= repository.entity_name %></td>
       <td><%= repository.try(:state) %></td>
       <td><%= last_time(repository.last_sync) %></td>
       <td><%= repository.content_type %></td>

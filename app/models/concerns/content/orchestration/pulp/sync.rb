@@ -51,8 +51,8 @@ module Content::Orchestration::Pulp::Sync
 
   def repo_options
     {
-      :pulp_id       => pulp_id,
-      :relative_path => relative_path,
+      :pulp_id       => pulp_repo_id,
+      :name          => to_label,
       :description   => description,
       :feed          => feed,
       :content_type  => content_type,

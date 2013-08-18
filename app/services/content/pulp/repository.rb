@@ -93,6 +93,8 @@ class Content::Pulp::Repository
 
   def delete
     Runcible::Resources::Repository.delete(pulp_id)
+  rescue RestClient::ResourceNotFound => e
+    true #not found is not a failure for delete
   end
 
   def sync

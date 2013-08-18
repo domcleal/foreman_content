@@ -19,7 +19,7 @@ module Content::Orchestration::Pulp
     @progress_report_id ||= Foreman.uuid
   end
 
-  def pulp_id
-   super.pulp_id ||= Foreman.uuid.gsub("-", '')
+  def pulp_repo_id
+   self.pulp_id ||= Foreman.uuid.gsub("-", '')
   end
 end
