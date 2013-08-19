@@ -51,6 +51,8 @@ module Content::Orchestration::Pulp::Clone
 
   def del_create_event_notifier; end
 
+  def del_copy_pulp_repo; end
+
   def del_pulp_repo
     repo.delete
   end

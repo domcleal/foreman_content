@@ -114,7 +114,8 @@ class Content::Pulp::Repository
 
   # once we keep a list pulp servers, this should be done in create/destroy
   def create_event_notifier
-    url      = events_repositories_url(:only_path => false, :host => Setting[:foreman_url])
+    url      = Rails.application.routes.url_helpers.
+                 events_api_repositories_url(:only_path => false, :host => Setting[:foreman_url])
     type     = '*'
     resource = Runcible::Resources::EventNotifier
     notifs   = resource.list

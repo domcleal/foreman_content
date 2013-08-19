@@ -4,7 +4,7 @@ module Content
 
     belongs_to :repository
     belongs_to :content_view
-    attr_accessible :description, :last_published, :name, :pulp_id, :relative_path, :status
+    attr_accessible :description, :last_published, :name, :pulp_id, :relative_path, :status, :content_view
 
     validate :relative_path, :repository_id, :content_view_id, :presence => true
 

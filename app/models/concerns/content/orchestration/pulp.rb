@@ -11,7 +11,7 @@ module Content::Orchestration::Pulp
   end
 
   def pulp?
-    @use_pulp ||= Setting.use_pulp and enabled?
+    @use_pulp ||= Setting.use_pulp
   end
 
   def update_cache; nil; end

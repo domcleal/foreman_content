@@ -6,13 +6,11 @@ module Content
     def index
       @content_views = ContentView.search_for(params[:search], :order => params[:order]).
           paginate(:page => params[:page])
-      @counter = Repository.group(:content_view_id).where(:content_view_id => @content_views.map(&:id)).count
+      @counter = RepositoryClone.group(:content_view_id).where(:content_view_id => @content_views.map(&:id)).count
     end
 
     def new
-      @content_view = ContentView.new
-      @content_view.product_id = params[:product] if params[:product]
-      @content_view.operatingsystem_id = params[:operatingsystem] if params[:operatingsystem]
+      @content_view = ContentView.new(:product_id=>params[:product], :operatingsystem_id=>params[:operatingsystem])
     end
 
     def create

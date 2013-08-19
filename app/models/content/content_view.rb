@@ -10,11 +10,9 @@ module Content
     has_many :hosts, :through => :content_view_hosts
 
     has_many :repository_clones
+    has_many :repositories, :through => :repository_clones
 
-    belongs_to :product
-    belongs_to :operatingsystem
-
-    before_save :clone_repos
+    after_save :clone_repos
 
     validates_presence_of :name
 
@@ -22,20 +20,26 @@ module Content
     scoped_search :in => :product, :on => :name, :rename => :product, :complete_value => :true
     scoped_search :in => :operatingsystem, :on => :name, :rename => :os, :complete_value => :true
 
+    attr_accessor :product_id, :operatingsystem_id
+
+    def originator
+      @originator ||= Product.find_by_id(@product_id) if @product_id
+      @originator ||= Operatingsystem.find_by_id(@operatingsystem_id) if @operatingsystem_id
+      @originator ||= repositories.first.try(:entity_name)
+    end
 
     def to_label
       name || "#{originator_name}-#{DateTime.now}"
     end
 
     def originator_name
-      origin = product || operatingsystem
-      origin ? origin.to_label: ''
+      originator ? originator.to_s: ''
     end
 
     def clone_repos
-      return unless origin = product || operatingsystem
-      origin.repositories.each do |repository|
-        repository.publish origin.name, id
+      return unless originator
+      originator.repositories.each do |repository|
+        repository.publish self
       end
     end
   end

@@ -1,11 +1,11 @@
 module Content
   module ContentViewsHelper
 
-    def repositories_owner(view)
+    def repositories(view)
       if view.new_record?
-        view.product || view.operatingsystem
+        view.originator.repositories
       else
-        view
+        view.repository_clones
       end
     end
 
