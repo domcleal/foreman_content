@@ -16,10 +16,9 @@ module Content
     belongs_to :hostgroup
     belongs_to :content_view
 
+    validates_presence_of :content_view, :environment
+
     #todo needs to validate that default can't be archived and vice-versa
-    #todo needs to validate that os or hostgroup exist but not both
-    validates_presence_of :operatingsystem_id, :unless => :hostgroup_id
-    validates_presence_of :hostgroup_id, :unless => :operatingsystem_id
 
   end
 end

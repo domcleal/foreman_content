@@ -2,8 +2,10 @@
 <%= form_for @content_view, :url => (@content_view.new_record? ? content_views_path : content_view_path(@content_view)) do |f| %>
   <%= base_errors_for @content_view %>
   <%= text_f f, :name, :value => @content_view.to_label %>
-  <%= f.hidden_field :product_id %>
-  <%= f.hidden_field :operatingsystem_id %>
+
+  <% @content_view.source_repositories.each do |repo| %>
+      <%= f.hidden_field :source_repositories, :multiple => true, :value => repo.id %>
+  <% end if  @content_view.new_record? %>
 
   <table class="table table-bordered">
     <tr>

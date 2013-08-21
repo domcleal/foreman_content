@@ -6,25 +6,22 @@ module Content
     def index
       @content_views = ContentView.search_for(params[:search], :order => params[:order]).
           paginate(:page => params[:page])
-      @counter = RepositoryClone.group(:content_view_id).where(:content_view_id => @content_views.map(&:id)).count
+      @counter = RepositoryClone.group(:content_view_id).count
     end
 
     def new
-      @content_view = ContentView.new(:product_id=>params[:product], :operatingsystem_id=>params[:operatingsystem])
+      @content_view = ContentViewFactory.create_product_content_view(params[:product]) if params[:product]
+      @content_view ||= ContentViewFactory.create_os_content_view(params[:operatingsystem]) if params[:operatingsystem]
+      @content_view ||= ContentViewFactory.create_composite_content_view(params[:hostgroup], params[:content_view]) if params[:hostgroup]
     end
 
     def create
-      if params[:content_content_view].delete(:operatingsystem)
-        @content_view = ContentView.new(params[:content_content_view])
-        redirect_to new_content_view_path(:operatingsystem=>@content_view.operatingsystem_id,:product=>@content_view.product_id)
-      else
       @content_view = ContentView.new(params[:content_content_view])
       if @content_view.save
         process_success
       else
         process_error
       end
-        end
     end
 
     def edit

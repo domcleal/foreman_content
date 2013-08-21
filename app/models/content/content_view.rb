@@ -20,25 +20,17 @@ module Content
     scoped_search :in => :product, :on => :name, :rename => :product, :complete_value => :true
     scoped_search :in => :operatingsystem, :on => :name, :rename => :os, :complete_value => :true
 
-    attr_accessor :product_id, :operatingsystem_id
+    attr_accessor :source_repositories, :originator_name
 
-    def originator
-      @originator ||= Product.find_by_id(@product_id) if @product_id
-      @originator ||= Operatingsystem.find_by_id(@operatingsystem_id) if @operatingsystem_id
-      @originator ||= repositories.first.try(:entity_name)
-    end
+
 
     def to_label
       name || "#{originator_name}-#{DateTime.now}"
     end
 
-    def originator_name
-      originator ? originator.to_s: ''
-    end
-
     def clone_repos
-      return unless originator
-      originator.repositories.each do |repository|
+      return unless @source_repositories
+      Repository.where(:id=>@source_repositories).each do |repository|
         repository.publish self
       end
     end
