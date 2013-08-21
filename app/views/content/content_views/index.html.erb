@@ -1,7 +1,5 @@
 <% title _("Content Views") %>
-<% title_actions display_link_if_authorized(_("New product view"), hash_for_new_content_view_path(:type=>'product')),
-                 display_link_if_authorized(_("New operating system view"), hash_for_new_content_view_path(:type=>'operatingsystem')),
-                 display_link_if_authorized(_("New hostgroup view"), hash_for_new_content_view_path(:type=>'hostgroup')), help_path %>
+<% title_actions display_link_if_authorized(_("New content view"), hash_for_new_content_view_path) %>
 
 
 <table class="table table-bordered table-striped">

@@ -1,3 +1,9 @@
 <% title _("New Content View") %>
 
-<%= render :partial => 'form' %>
+<% if @content_view %>
+  <%= render :partial => 'form' %>
+<% elsif params[:type] %>
+  <%= render :partial => 'step2' %>
+<% else %>
+  <%= render :partial => 'step1' %>
+<% end %>

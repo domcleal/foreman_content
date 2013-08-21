@@ -1,0 +1,12 @@
+<%= javascript 'content/content.js' %>
+
+<%= wizard_header 1, _("Select source type"), _("Select content"), _("Create") %>
+
+<%= alert :class => 'controls alert-success', :header => 'Select a source',
+          :text  => _('Please select the source for the content view.') %>
+<%=  option_button _("Product"), hash_for_new_content_view_path(:type=>'product'), :class => 'btn btn-success',
+                   :help_inline => _("Create a new content view of a product") %>
+<%=  option_button _("Operating system"), hash_for_new_content_view_path(:type=>'operatingsystem'), :class => 'btn btn-success',
+                   :help_inline => _("Create a content view of an operating system")  %>
+<%=  option_button(_("Host group"), hash_for_new_content_view_path(:type=>'hostgroup'), :class => 'btn btn-success',
+                   :help_inline => _("Create a new content view of a hostgroup stack") )%>
