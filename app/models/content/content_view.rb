@@ -3,7 +3,8 @@ module Content
     has_ancestry :orphan_strategy => :rootify
 
     has_many :available_content_views, :dependent => :destroy
-    has_many :hostgroup, :through => :available_content_views
+    has_many :hostgroups, :through => :available_content_views
+    has_many :environments, :through => :available_content_views
     delegate :operatingsystems, :to => :available_content_views, :allow_nil => true
 
     has_many :content_view_hosts, :dependent => :destroy, :uniq => true, :foreign_key => :content_view_id, :class_name => 'Content::ContentViewHost'

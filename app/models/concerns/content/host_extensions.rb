@@ -35,7 +35,7 @@ module Content::HostExtensions
 
   def inherited_content_view_ids
     return [] unless hostgroup_id
-    Content::AvailableContentView.where(:hostgroup_id => hostgroup.path_ids).pluck(:content_view_id)
+    Content::AvailableContentView.where(:hostgroup_id => hostgroup.path_ids, :environment_id=>self.environment_id).pluck(:content_view_id)
   end
 
   def all_content_view_ids
@@ -43,7 +43,7 @@ module Content::HostExtensions
   end
 
   def attached_repositories
-    Content::Repository.attached_to_host(self)
+    Content::RepositoryClone.where(:content_view_id => all_content_view_ids)
   end
 
   private
