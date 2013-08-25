@@ -5,7 +5,6 @@ class CreateContentRepositoryClones < ActiveRecord::Migration
       t.string :description
       t.references :repository
       t.string :relative_path
-      t.references :content_view
       t.string :pulp_id
       t.string :status
       t.datetime :last_published
@@ -13,7 +12,6 @@ class CreateContentRepositoryClones < ActiveRecord::Migration
       t.timestamps
     end
     add_index :content_repository_clones, :repository_id
-    add_index :content_repository_clones, :content_view_id
     add_index :content_repository_clones, :pulp_id, :unique => true
   end
 end

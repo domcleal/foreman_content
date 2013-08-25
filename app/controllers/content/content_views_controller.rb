@@ -10,9 +10,10 @@ module Content
     end
 
     def new
+      @hostgroup = Hostgroup.find_by_id(params[:hostgroup]) if params[:hostgroup]
       @content_view = ContentViewFactory.create_product_content_view(params[:product]) if params[:product]
       @content_view ||= ContentViewFactory.create_os_content_view(params[:operatingsystem]) if params[:operatingsystem]
-      @content_view ||= ContentViewFactory.create_composite_content_view(params[:hostgroup], params[:content_view]) if params[:hostgroup]
+      @content_view ||= ContentViewFactory.create_composite_content_view(params[:content_content_view_factory]) if params[:content_content_view_factory]
     end
 
     def create

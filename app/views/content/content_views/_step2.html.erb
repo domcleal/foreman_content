@@ -1,19 +1,15 @@
 <%= javascript 'content/content.js' %>
 
 <%= wizard_header 2, _("Select source type"), _("Select content"), _("Create") %>
-<form class='form-horizontal well'>
-  <% if params[:type] == 'product' %>
-    <%= field(nil, _("Product")) do
-      select_tag('product', options_from_collection_for_select(Content::Product.has_repos, "id", "name"))
-    end %>
-  <% elsif params[:type] == 'operatingsystem' %>
-    <%= field(nil, _("Operating system")) do
-      select_tag('operatingsystem', options_from_collection_for_select(Redhat.has_repos, "id", "to_label"))
-    end %>
-  <% elsif params[:type] == 'hostgroup' %>
-    <%= field(nil, _("Host group")) do
-      select_tag('hostgroup', options_from_collection_for_select(Hostgroup.all, "id", "to_label"))
-    end %>
+<%= form_for Content::ContentViewFactory.new, :url => hash_for_new_content_view_path, :class => 'form-horizontal well', :method => :get do |f| %>
+  <%= f.hidden_field :id, :value => @hostgroup.id %>
+  <%= f.hidden_field :type, :value => 'hostgroup' %>
+  <%= select_f f, :parent_cv, @hostgroup.parent.try(:content_views) || [], "id", "name",
+               :label => _("Parent Content view") %>
+  <h5>Products</h5>
+  <% @hostgroup.products.each do |product| %>
+    <%= select_f f, :product_cvs, product.content_views, "id", "name", {}, :label => product.name %>
   <% end %>
+
   <%= next_or_cancel hash_for_new_content_view_path() %>
-</form>
+<% end %>

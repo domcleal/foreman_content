@@ -1,12 +1,19 @@
 <%= javascript 'content/content.js' %>
 
 <%= wizard_header 1, _("Select source type"), _("Select content"), _("Create") %>
-
-<%= alert :class => 'controls alert-success', :header => 'Select a source',
-          :text  => _('Please select the source for the content view.') %>
-<%=  option_button _("Product"), hash_for_new_content_view_path(:type=>'product'), :class => 'btn btn-success',
-                   :help_inline => _("Create a new content view of a product") %>
-<%=  option_button _("Operating system"), hash_for_new_content_view_path(:type=>'operatingsystem'), :class => 'btn btn-success',
-                   :help_inline => _("Create a content view of an operating system")  %>
-<%=  option_button(_("Host group"), hash_for_new_content_view_path(:type=>'hostgroup'), :class => 'btn btn-success',
-                   :help_inline => _("Create a new content view of a hostgroup stack") )%>
+<form class='form-horizontal well'>
+  <% if params[:type] == 'product' %>
+    <%= field(nil, _("Product")) do
+      select_tag('product', options_from_collection_for_select(Content::Product.has_repos, "id", "name"))
+    end %>
+  <% elsif params[:type] == 'operatingsystem' %>
+    <%= field(nil, _("Operating system")) do
+      select_tag('operatingsystem', options_from_collection_for_select(Redhat.has_repos, "id", "to_label"))
+    end %>
+  <% elsif params[:type] == 'hostgroup' %>
+    <%= field(nil, _("Host group")) do
+      select_tag('hostgroup', options_from_collection_for_select( accessible_hostgroups, "id", "to_label" ))
+    end %>
+  <% end %>
+  <%= next_or_cancel hash_for_new_content_view_path() %>
+</form>

@@ -3,6 +3,9 @@ module Content
     include ::Taxonomix
 
     has_many :repositories
+    has_many :repository_clones, :through => :repositories
+    has_many :content_views, :through => :repository_clones, :uniq=>true
+
 
     has_many :hostgroup_products, :dependent => :destroy, :uniq=>true
     has_many :hostgroups, :through => :hostgroup_products
@@ -11,6 +14,7 @@ module Content
     has_many :hosts, :through => :host_products
 
     scope :has_repos, includes(:repositories).where('content_repositories.id IS NOT NULL')
+
 
     validates_with Validators::DescriptionFormat, :attributes => :description
     validates :name, :presence => true

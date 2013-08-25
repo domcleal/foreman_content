@@ -8,6 +8,8 @@ module Content::HostgroupExtensions
     has_many :available_content_views, :dependent => :destroy, :class_name => 'Content::AvailableContentView'
     has_many :content_views, :through => :available_content_views, :class_name => 'Content::ContentView'
 
+    scope :has_content_views, joins(:available_content_views)
+
     scoped_search :in => :products, :on => :name, :complete_value => true, :rename => :product
   end
 

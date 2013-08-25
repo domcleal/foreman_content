@@ -2,7 +2,7 @@
 
 <% if @content_view %>
   <%= render :partial => 'form' %>
-<% elsif params[:type] %>
+<% elsif @hostgroup %>
   <%= render :partial => 'step2' %>
 <% else %>
   <%= render :partial => 'step1' %>

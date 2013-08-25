@@ -47,8 +47,8 @@ module Content
     end
 
     def publish content_view
-      repository_clones.create(
-        :content_view => content_view,
+      repository_clones.create!(
+        :content_views => [content_view],
         :name => self.name + "_clone",
         :relative_path => custom_repo_path("acme_org", "library", entity_name, name) + Foreman.uuid.gsub("-", '')
       )

@@ -3,11 +3,12 @@ module Content
     include Content::Orchestration::Pulp::Clone
 
     belongs_to :repository
-    belongs_to :content_view
-    attr_accessible :description, :last_published, :name, :pulp_id, :relative_path, :status, :content_view
+    has_many :content_view_repository_clones
+    has_many :content_views, :through => :content_view_repository_clones
+    attr_accessible :description, :last_published, :name, :pulp_id, :relative_path, :status, :content_views
 
-    validate :relative_path, :repository_id, :content_view_id, :presence => true
+    validate :relative_path, :repository_id, :presence => true
 
-    delegate :content_type, :architecture, :unprotected, :gpg_key, :product,  :to => :repository
+    delegate :content_type, :architecture, :unprotected, :gpg_key, :product, :to => :repository
   end
 end
