@@ -10,8 +10,6 @@ module Content::HostgroupExtensions
 
     scope :has_content_views, joins(:content_views)
 
-    scope :has_content_views, joins(:available_content_views)
-
     scoped_search :in => :products, :on => :name, :complete_value => true, :rename => :product
   end
 

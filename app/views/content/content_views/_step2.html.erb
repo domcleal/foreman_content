@@ -6,8 +6,11 @@
                :label => _("Parent Content view") %>
   <h6>Products</h6>
   <% @hostgroup.products.each do |product| %>
-    <%= select_f f, :product_cvs, product.content_views, "id", "name", {}, :label => product.name %>
+    <%= select_f f, :product_cv, product.content_views, "id", "name", {}, :label => product.name %>
   <% end %>
+
+  <h6>Operating System</h6>
+  <%= select_f f, :os_cv, @hostgroup.os.content_views, "id", "name" %>
 
   <%= next_or_cancel hash_for_new_content_view_path() %>
 <% end %>

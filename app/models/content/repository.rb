@@ -48,8 +48,9 @@ module Content
       repository_clones.create!(
         :content_views => [content_view],
         :name => self.name + "_clone",
-        :relative_path => 'foreman'
+        :relative_path => "#{to_label}/#{Foreman.uuid}"
       )
     end
+
   end
 end

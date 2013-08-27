@@ -34,8 +34,9 @@ module Content::HostExtensions
   end
 
   def inherited_content_view_ids
-    return [] unless hostgroup_id
-    Content::AvailableContentView.where(:hostgroup_id => hostgroup.path_ids, :environment_id=>self.environment_id).pluck(:content_view_id)
+    return [] if hostgroup_id.nil? or environment_id.nil?
+    hostgroup.content_views.joins(:available_content_views).
+      where(:content_available_content_views => {:environment_id => environment_id}).pluck(:id)
   end
 
   def all_content_view_ids
@@ -43,7 +44,8 @@ module Content::HostExtensions
   end
 
   def attached_repositories
-    Content::RepositoryClone.where(:content_view_id => all_content_view_ids)
+    return [] if all_content_view_ids.empty?
+    Content::RepositoryClone.for_content_views(all_content_view_ids)
   end
 
   private
