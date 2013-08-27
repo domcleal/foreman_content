@@ -12,10 +12,7 @@ module Content
     has_many :host_products, :dependent => :destroy, :uniq=>true
     has_many :hosts, :through => :host_products
 
-    scope :has_repos, includes(:repositories).where('content_repositories.id IS NOT NULL')
-
-
-
+    scope :has_repos, joins(:repositories)
 
     validates_with Validators::DescriptionFormat, :attributes => :description
     validates :name, :presence => true

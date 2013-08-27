@@ -1,7 +1,6 @@
 module Content
   class Repository < ActiveRecord::Base
     include Content::Orchestration::Pulp::Sync
-    include Content::CustomRepositoryPaths
 
     YUM_TYPE       = 'yum'
     KICKSTART_TYPE = 'kickstart'
@@ -13,7 +12,6 @@ module Content
     belongs_to :gpg_key
     belongs_to :architecture
     has_many :repository_clones
-
 
     validates_presence_of :type # can't create this object, only child
 
@@ -50,7 +48,7 @@ module Content
       repository_clones.create!(
         :content_views => [content_view],
         :name => self.name + "_clone",
-        :relative_path => custom_repo_path("acme_org", "library", entity_name, name) + Foreman.uuid.gsub("-", '')
+        :relative_path => 'foreman'
       )
     end
   end

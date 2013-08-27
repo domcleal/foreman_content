@@ -1,5 +1,3 @@
-<%= javascript 'content/content.js' %>
-
 <%= wizard_header 2, _("Select source type"), _("Select content"), _("Create") %>
 <%= form_for Content::ContentViewFactory.new, :url => hash_for_new_content_view_path, :class => 'form-horizontal well', :method => :get do |f| %>
   <%= f.hidden_field :originator_id, :value => @hostgroup.id %>

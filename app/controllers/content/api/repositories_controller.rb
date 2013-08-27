@@ -8,7 +8,7 @@ module Content
       # callback event from pulp upon tasks/events finished up
       def events
         if (repo_id = params['payload'] && params['payload']['repo_id'])
-          repo = Content::RepositoryBase.where(:pulp_id => repo_id).first
+          repo = Content::Repository.where(:pulp_id => repo_id).first
         end
         render_error 'not_found', :status => :not_found and return false if repo.nil?
         event_handler = Pulp::EventHandler.new(repo_id, params)
