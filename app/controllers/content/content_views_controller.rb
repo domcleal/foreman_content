@@ -6,7 +6,8 @@ module Content
     def index
       @content_views = ContentView.search_for(params[:search], :order => params[:order]).
           paginate(:page => params[:page])
-      @counter = RepositoryClone.group(:content_view_id).count
+      @counter = RepositoryClone.joins(:content_view_repository_clones).group(:content_view_id).count
+
     end
 
     def new

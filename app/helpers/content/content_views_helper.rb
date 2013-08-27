@@ -3,7 +3,7 @@ module Content
 
     def repositories(view)
       if view.new_record?
-        view.source_repositories
+        view.source_repositories + view.repository_clones
       else
         view.repository_clones
       end

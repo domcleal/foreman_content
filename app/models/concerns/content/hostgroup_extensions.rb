@@ -6,7 +6,9 @@ module Content::HostgroupExtensions
     has_many :products, :through => :hostgroup_products, :class_name => 'Content::Product'
 
     has_many :available_content_views, :dependent => :destroy, :class_name => 'Content::AvailableContentView'
-    has_many :content_views, :through => :available_content_views, :class_name => 'Content::ContentView'
+    has_many :content_views, :as => :originator, :class_name => 'Content::ContentView'
+
+    scope :has_content_views, joins(:content_views)
 
     scope :has_content_views, joins(:available_content_views)
 
