@@ -35,8 +35,10 @@ module Content::HostExtensions
 
   def inherited_content_view_ids
     return [] if hostgroup_id.nil? or environment_id.nil?
-    hostgroup.content_views.joins(:available_content_views).
-      where(:content_available_content_views => {:environment_id => environment_id}).pluck(:id)
+
+    Content::ContentView.joins(:available_content_views).
+      where(:content_available_content_views => {:environment_id => environment_id}).
+      where(:originator_type => 'Hostgroup', :originator_id => hostgroup_id).pluck(:id)
   end
 
   def all_content_view_ids

@@ -9,7 +9,7 @@ module Content::HostgroupExtensions
     scope :has_content_views, joins(:content_views)
 
     scoped_search :in => :products, :on => :name, :complete_value => true, :rename => :product
-    scoped_search :in => :hostgroups, :on => :label, :complete_value => true, :rename => :content_view
+    scoped_search :in => :content_views, :on => :name, :complete_value => true, :rename => :content_view
   end
 
   def inherited_product_ids
