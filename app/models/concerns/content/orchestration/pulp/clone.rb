@@ -64,7 +64,7 @@ module Content::Orchestration::Pulp::Clone
   def repo_options
     {
       :pulp_id       => pulp_repo_id,
-      :name          => to_label,
+      :name          => "#{to_label}_clone",
       :relative_path => relative_path,
       :content_type  => content_type,
       :protected     => false,
