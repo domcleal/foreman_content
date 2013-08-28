@@ -9,24 +9,18 @@ module Content
     end
 
     def new
-      case params[:type]
-        when "operatingsystem"
-          @repository = Repository::OperatingSystem.new()
-        when "product"
-          @repository = Repository::Product.new()
-        else
-          not_found
-      end
+      @repository = case params[:type]
+                    when "operatingsystem"
+                      Repository::OperatingSystem.new(:unprotected => true)
+                    when "product"
+                      Repository::Product.new(:product_id => params[:product_id])
+                    else
+                      not_found
+                    end
     end
 
     def create
-      type = params[:content_repository].delete(:type)
-      @repository = case type
-                      when "Content::Repository::Product"
-                        Repository::Product.new(params[:content_repository])
-                      when "Content::Repository::OperatingSystem"
-                        Repository::OperatingSystem.new(params[:content_repository])
-      end
+      @repository = Repository.new(params[:content_repository])
       if @repository.save
         process_success
       else
@@ -38,7 +32,6 @@ module Content
     end
 
     def update
-      params[:content_repository].delete(:type)
       if @repository.update_attributes(params[:content_repository])
         process_success
       else

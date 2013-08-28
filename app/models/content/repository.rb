@@ -1,6 +1,7 @@
 module Content
   class Repository < ActiveRecord::Base
     include Content::Orchestration::Pulp::Sync
+    include Foreman::STI
 
     YUM_TYPE       = 'yum'
     KICKSTART_TYPE = 'kickstart'
