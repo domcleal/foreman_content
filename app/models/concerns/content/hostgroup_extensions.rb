@@ -4,16 +4,16 @@ module Content::HostgroupExtensions
   included do
     has_many :hostgroup_products, :dependent => :destroy, :uniq => true, :class_name => 'Content::HostgroupProduct'
     has_many :products, :through => :hostgroup_products, :class_name => 'Content::Product'
-
-    has_many :available_content_views, :dependent => :destroy, :class_name => 'Content::AvailableContentView'
     has_many :content_views, :as => :originator, :class_name => 'Content::ContentView'
 
     scope :has_content_views, joins(:content_views)
 
     scoped_search :in => :products, :on => :name, :complete_value => true, :rename => :product
+    scoped_search :in => :hostgroups, :on => :label, :complete_value => true, :rename => :content_view
   end
 
   def inherited_product_ids
+    return [] if hostgroup.ancestor_ids.empty?
     Content::HostgroupProduct.where(:hostgroup_id => hostgroup.ancestor_ids).pluck(:product_id)
   end
 
@@ -22,7 +22,8 @@ module Content::HostgroupExtensions
   end
 
   def inherited_content_view_ids
-    Content::AvailableContentView.where(:hostgroup_id => hostgroup.ancestor_ids).pluck(:content_view_id)
+    return [] if hostgroup.ancestor_ids.empty?
+    Content::ContentView.where(:originator_id => hostgroup.ancestor_ids, :originator_type => 'Hostgroup').pluck(:id)
   end
 
   def all_content_views_ids

@@ -7,7 +7,7 @@ module Content::OperatingsystemExtensions
     has_many :available_content_veiws, :dependent => :destroy, :class_name => 'Content::AvailableContentView'
     has_many :content_views, :as => :originator, :class_name => 'Content::ContentView'
 
-    scope :has_repos, joins(:repositories)
+    scope :has_repos, joins(:repositories).uniq
   end
 
 end
