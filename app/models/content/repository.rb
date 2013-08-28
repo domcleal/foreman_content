@@ -14,6 +14,8 @@ module Content
     belongs_to :architecture
     has_many :repository_clones
 
+    before_destroy EnsureNotUsedBy.new(:repository_clones)
+
     validates_presence_of :type # can't create this object, only child
 
     validates :name, :presence => true

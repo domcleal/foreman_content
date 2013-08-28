@@ -5,10 +5,11 @@ module Content
     REPO_PREFIX = '/pulp/repos/'
 
     belongs_to :repository
-    has_many :content_view_repository_clones
+    has_many :content_view_repository_clones, :dependent => :destroy
     has_many :content_views, :through => :content_view_repository_clones
-    attr_accessible :description, :last_published, :name, :pulp_id, :relative_path, :status, :content_views
+    before_destroy EnsureNotUsedBy.new(:content_views)
 
+    attr_accessible :description, :last_published, :name, :pulp_id, :relative_path, :status, :content_views
     validate :relative_path, :repository_id, :presence => true
 
     delegate :content_type, :architecture, :unprotected, :gpg_key, :product, :to => :repository
