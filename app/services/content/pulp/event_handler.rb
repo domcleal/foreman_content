@@ -4,14 +4,16 @@ class Content::Pulp::EventHandler
   delegate :logger, :to => :Rails
 
   def initialize(pulp_id, params)
-    @type, @status = parse_type
+    @pulp_id      = pulp_id
     @params        = params
+    @type, @status = parse_type
+    return nil unless repo
     log
     update_state
   end
 
   private
-  attr_reader :params
+  attr_reader :pulp_id, :params
 
   def repo
     @repo ||= case type
@@ -37,9 +39,9 @@ class Content::Pulp::EventHandler
 
     case type
     when 'sync'
-      repo.update_attribute(:last_sync, last_sync) if success?
+      repo.update_attribute(:last_sync, finished_at) if success?
     when 'promote'
-      repo.update_attribute(:last_published, last_published) if success?
+      repo.update_attribute(:last_published, finished_at) if success?
 
     end
   end
@@ -52,11 +54,7 @@ class Content::Pulp::EventHandler
     params['payload']['result']
   end
 
-  def last_sync
-    Time.parse(params['payload']['last_sync'])
-  end
-
-  def last_published
+  def finished_at
     Time.parse(params['payload']['completed'])
   end
 

@@ -7,6 +7,10 @@ module Content::Orchestration::Pulp::Sync
     before_destroy :queue_pulp_destroy unless Rails.env.test?
   end
 
+  def last_sync
+    read_attribute(:last_sync) || repo.last_sync
+  end
+
   private
 
   def queue_pulp

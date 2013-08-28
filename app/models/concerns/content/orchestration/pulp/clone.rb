@@ -7,6 +7,10 @@ module Content::Orchestration::Pulp::Clone
     before_destroy :repository_clone_destroy unless Rails.env.test?
   end
 
+  def last_published
+    read_attribute(:last_published) || repo.last_publish
+  end
+
   private
 
   def repository_clone_save
